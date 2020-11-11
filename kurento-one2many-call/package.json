@@ -3,7 +3,8 @@
   "version": "6.15.1-dev",
   "private": true,
   "scripts": {
-    "postinstall": "cd static && bower install"
+    "postinstall": "cd static && bower install",
+    "start": "nodemon --inspect ./server.js"
   },
   "dependencies": {
     "express": "^4.17.0",
@@ -12,6 +13,7 @@
     "ws": "^7.1.0"
   },
   "devDependencies": {
-    "bower": "^1.4.1"
+    "bower": "^1.4.1",
+    "nodemon": "^2.0.6"
   }
 }

@@ -19,6 +19,24 @@ var ws = new WebSocket('wss://' + location.host + '/one2many');
 var video;
 var webRtcPeer;
 
+function getCameraList() {
+	navigator.mediaDevices.getUserMedia({ video: true }).then(function (stream) {
+		DetectRTC.load(function () {
+			console.log("DetectRTC.videoInputDevices: ", DetectRTC.videoInputDevices);
+			if (DetectRTC.videoInputDevices.length) {
+				var videoCameraList = document.getElementById('cameraOptionsList');
+				DetectRTC.videoInputDevices.forEach(device => {
+					console.log('device: ', device);
+					var option = document.createElement('option');
+					option.value = device.id;
+					option.innerHTML = device.label || 'UnKnown Camera';
+					videoCameraList.appendChild(option);
+				});
+			}
+		});
+	});
+}
+
 window.onload = function() {
 	console = new Console();
 	video = document.getElementById('video');
@@ -26,7 +44,21 @@ window.onload = function() {
 	document.getElementById('call').addEventListener('click', function() { presenter(); } );
 	document.getElementById('viewer').addEventListener('click', function() { viewer(); } );
 	document.getElementById('terminate').addEventListener('click', function() { stop(); } );
-}
+	getCameraList();
+	/* navigator && navigator.mediaDevices.enumerateDevices().then(devices => {
+		console.log("devices: ", devices);
+		var videoDevices = devices.filter(device => device.kind === 'videoinput');
+		console.log("videoDevices: ", videoDevices);
+		var videoCameraList = document.getElementById('cameraOptionsList');
+		videoDevices.forEach(device => {
+			console.log('device: ', device);
+			var option = document.createElement('option');
+			option.value = device.id;
+			option.innerHTML = device.label || 'UnKnown Camera';
+			videoCameraList.appendChild(option);
+		});
+	}); */
+};
 
 window.onbeforeunload = function() {
 	ws.close();
@@ -77,11 +109,18 @@ function viewerResponse(message) {
 function presenter() {
 	if (!webRtcPeer) {
 		showSpinner(video);
-
+		var constraints = {
+			video: {
+				width:{min:640,max:1280},height:{min:240,max:720},
+				framerate: 30,
+				deviceId: document.getElementById('cameraOptionsList').value
+			}
+		};
 		var options = {
 			localVideo: video,
-			onicecandidate : onIceCandidate
-	    }
+			onicecandidate : onIceCandidate,
+			mediaConstraints: constraints
+	    };
 
 		webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
 			if(error) return onError(error);

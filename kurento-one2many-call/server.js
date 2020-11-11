@@ -343,7 +343,7 @@ function stop(sessionId) {
 				}));
 			}
 		}
-		presenter.pipeline.release();
+		presenter.pipeline && presenter.pipeline.release();
 		presenter = null;
 		viewers = [];
 
@@ -356,7 +356,7 @@ function stop(sessionId) {
 
 	if (viewers.length < 1 && !presenter) {
         console.log('Closing kurento client');
-        kurentoClient.close();
+        kurentoClient && kurentoClient.close();
         kurentoClient = null;
     }
 }

@@ -13,13 +13,14 @@
     <link rel="stylesheet" href="bower_components/ekko-lightbox/dist/ekko-lightbox.min.css">
     <link rel="stylesheet" href="css/kurento.css">
 
+    <script src="bower_components/detectrtc/DetectRTC.js"></script>
     <script src="bower_components/webrtc-adapter/release/adapter.js"></script>
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="bower_components/demo-console/index.js"></script>
     <script src="bower_components/ekko-lightbox/dist/ekko-lightbox.min.js"></script>
 
-    <script src="bower_components/kurento-utils/js/kurento-utils.js"></script>
+    <script src="dist/kurento-utils.js"></script>
 
     <script src="js/index.js"></script>
     <title>Kurento Tutorial 3: Video Call 1 to N with WebRTC</title>
@@ -49,6 +50,7 @@
     <div class="container">
       <div class="page-header">
         <h1>Tutorial 3: Video Call 1 to N with WebRTC</h1>
+
         <p>
           This web application consists on an one to many video call using
           <a href="http://www.webrtc.org/">WebRTC</a>. In other words, this is
@@ -88,6 +90,14 @@
         </ol>
       </div>
       <div class="row">
+
+        <div class="form-group">
+          <label for="cameraOptionsList">Select a Camera from the List</label>
+          <select class="form-control" id="cameraOptionsList">
+            <option disabled>Select a Camera from the List</option>
+          </select>
+        </div>
+
         <div class="col-md-5">
           <div class="row">
             <div class="col-md-12">
